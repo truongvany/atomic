@@ -350,3 +350,63 @@
     width: 100%;
     height: 100%;
 }
+
+/* ─── Mobile: Popout box sizing ─────────────────────────────────────────── */
+@media (max-width: 480px) {
+    .nav-left .nav-popout {
+        width: calc(100vw - 32px);
+        min-width: 0;
+        left: 0;
+        height: auto;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .nav-left .nav-popout-inner {
+        padding: 80px 16px 20px 16px;
+        gap: 14px;
+    }
+
+    .nav-right .nav-popout {
+        width: calc(100vw - 32px);
+        min-width: 0;
+        right: 0;
+    }
+
+    .nav-right .nav-popout-inner {
+        width: 100%;
+        padding: 80px 16px 20px 16px;
+        gap: 14px;
+    }
+
+    .nav-wa-qr {
+        width: 150px;
+        height: 150px;
+        top: -40px;
+    }
+
+    .nav-wa-title {
+        font-size: 1.1rem;
+        margin-top: -30px;
+    }
+
+    .nav-wa-desc {
+        font-size: 0.9rem;
+    }
+
+    .nav-work-btn {
+        margin-top: 4rem;
+        font-size: 1.1rem;
+        padding: 14px;
+    }
+
+    .nav-work-badge {
+        font-size: 0.85rem;
+        padding: 3px 10px;
+    }
+
+    .nav-work-title {
+        font-size: 0.8rem;
+        margin-top: 30px;
+    }
+}

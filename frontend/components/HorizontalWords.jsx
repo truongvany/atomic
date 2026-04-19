@@ -11,26 +11,21 @@ const HorizontalWords = () => {
     const sectionRef = useRef(null);
 
     useEffect(() => {
+        const isMobile = window.innerWidth < 768;
+
         const ctx = gsap.context(() => {
             const container = sectionRef.current;
             const textRef = container.querySelector('.horizontal-words__relative');
             const letters = container.querySelectorAll('.letter');
-
-            // Select the individual stickers instead of just the wrapper
-            // or we select the images directly if they are the elements we want to animate.
-            // The original logic animated .horizontal-words__sticker-svg, but since you have multiple images:
             const stickers = container.querySelectorAll('.horizontal-words__sticker-watch, .horizontal-words__sticker-cursor, .horizontal-words__sticker-phone');
-
-            // Note: To animate SVG paths with strokeDashoffset, the SVG must be inlined in the HTML,
-            // not loaded via <img> tags. The current setup uses <img> tags, so direct path animation
-            // as written below will not work unless the SVGs are converted to inline <svg> elements.
-            // For the purpose of this exercise, we'll assume the intent is for inline SVGs or
-            // that the querySelectorAll will find nothing and the animation will gracefully skip.
             const arrows = container.querySelectorAll('.horizontal-words__arrow-svg path, .horizontal-words__arrow-end-svg path');
 
-            // --- ENTRANCE & PINNING LOGIC ---
-            // To make letters start animating as we scroll down from VimeoHero,
-            // we start the horizontal movement as soon as the section enters the viewport (top bottom).
+            if (isMobile) {
+                // Mobile: skip GSAP pin, let CSS overflow-x handle scrolling
+                return;
+            }
+
+            // --- DESKTOP: ENTRANCE & PINNING LOGIC ---
             const entranceDistance = window.innerHeight;
             const pinnedDistance = 2500;
 
@@ -46,7 +41,7 @@ const HorizontalWords = () => {
 
             scrollTween
                 .fromTo(textRef, {
-                    x: window.innerWidth // Start words off-screen right
+                    x: window.innerWidth
                 }, {
                     x: window.innerWidth * 0.5,
                     ease: "none",
@@ -58,7 +53,6 @@ const HorizontalWords = () => {
                     duration: pinnedDistance
                 });
 
-            // Separate pinning logic so it only locks when the section hits the top
             ScrollTrigger.create({
                 trigger: container,
                 start: "top top",
@@ -67,7 +61,6 @@ const HorizontalWords = () => {
                 pinSpacing: true,
                 invalidateOnRefresh: true
             });
-            // ------------------------------------
 
             // Bounce each letter randomly
             letters.forEach((letter) => {
@@ -79,7 +72,7 @@ const HorizontalWords = () => {
                         trigger: letter,
                         containerAnimation: scrollTween,
                         start: 'left 90%',
-                        end: 'left 50%', // Finish as it reaches center
+                        end: 'left 50%',
                         scrub: 0.5
                     }
                 });
@@ -96,13 +89,13 @@ const HorizontalWords = () => {
                         trigger: sticker,
                         containerAnimation: scrollTween,
                         start: 'left 90%',
-                        end: 'left 50%', // Finish as it reaches center
+                        end: 'left 50%',
                         scrub: 0.5
                     }
                 });
             });
 
-            // Animate Drawing SVG Arrows 
+            // Animate Drawing SVG Arrows
             arrows.forEach((arrowPath) => {
                 if (arrowPath.getTotalLength) {
                     const pathLen = arrowPath.getTotalLength();
@@ -114,7 +107,7 @@ const HorizontalWords = () => {
                             trigger: arrowPath.parentElement,
                             containerAnimation: scrollTween,
                             start: 'left 90%',
-                            end: 'left 50%', // This is the last arrow's end point
+                            end: 'left 50%',
                             scrub: 0.5
                         }
                     });

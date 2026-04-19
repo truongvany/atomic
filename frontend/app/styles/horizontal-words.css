@@ -116,3 +116,63 @@
     z-index: 2;
     white-space: nowrap;
 }
+
+/* ─── Mobile: CSS horizontal scroll (no GSAP pin) ───────────────────────── */
+@media (max-width: 767px) {
+    .horizontal-words-section {
+        height: auto;
+        overflow: visible;
+        padding: 60px 0 80px;
+    }
+
+    .horizontal-words__relative {
+        position: relative;
+        top: auto;
+        transform: none;
+        padding: 20px 0;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        /* Indent so first letter isn't flush to edge */
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+
+    .horizontal-words__relative::-webkit-scrollbar {
+        display: none;
+    }
+
+    .horizontal-words__h2 {
+        font-size: 18vw;
+        white-space: nowrap;
+    }
+
+    /* Hide desktop-only decorative arrows on mobile */
+    .horizontal-words__arrow-svg,
+    .horizontal-words__arrow-end-svg {
+        display: none;
+    }
+
+    /* Simplify sticker positioning on mobile */
+    .horizontal-words__sticker-watch,
+    .horizontal-words__sticker-cursor,
+    .horizontal-words__sticker-phone {
+        display: none;
+    }
+
+    .horizontal-words__bottom-text {
+        position: relative;
+        top: auto;
+        left: auto;
+        transform: none;
+        width: 100%;
+        padding: 24px 24px 0;
+        text-align: left;
+    }
+
+    .horizontal-words__bottom-text-l {
+        font-size: 1rem;
+        max-width: 100%;
+    }
+}

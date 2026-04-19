@@ -299,3 +299,60 @@
 .home-header__mute-icons {
     display: none;
 }
+
+/* ─── Mobile ─────────────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+    .vimeo-hero {
+        width: calc(100% - 12px);
+        height: calc(100svh - 12px);
+        margin: 6px auto;
+        border-radius: 16px;
+    }
+
+    .home-header__title {
+        bottom: 56px;
+        padding: 0 20px;
+    }
+
+    .vimeo-hero__title {
+        font-size: clamp(1.8rem, 8vw, 3rem);
+        letter-spacing: -1.5px;
+        gap: 0 0.1em;
+    }
+
+    .vimeo-hero__controls {
+        bottom: 16px;
+        left: 20px;
+    }
+
+    /* Mobile mute button — top-right corner of video */
+    .vimeo-mobile-mute {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        z-index: 4;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        border: 1.5px solid rgba(255, 255, 255, 0.4);
+        background: rgba(0, 0, 0, 0.4);
+        color: var(--color-white);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+
+    .vimeo-mobile-mute svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* Hide mobile mute button on desktop */
+@media (min-width: 768px) {
+    .vimeo-mobile-mute {
+        display: none;
+    }
+}

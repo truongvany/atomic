@@ -21,6 +21,7 @@ function initWiggle(element, intensity) {
 export default function Footer() {
     useEffect(() => {
         gsap.registerPlugin(ScrollTrigger);
+        const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
         // ─── Map link underline draw/undraw ───
         const footerMapLink = document.querySelector('.footer-map-link');
@@ -85,8 +86,26 @@ export default function Footer() {
                 gsap.to(creditsItems, { y: boxHeight, duration: 0.4, ease: 'power3.in', stagger: -0.03, delay: 0.1 });
             };
 
-            creditsWrapper.addEventListener('mouseenter', onEnter);
-            creditsWrapper.addEventListener('mouseleave', onLeave);
+            if (canHover) {
+                creditsWrapper.addEventListener('mouseenter', onEnter);
+                creditsWrapper.addEventListener('mouseleave', onLeave);
+            } else {
+                // Touch: tap to toggle
+                let isOpen = false;
+                const creditsBtn = creditsWrapper.querySelector('.footer-credits');
+                if (creditsBtn) {
+                    creditsBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        if (isOpen) { onLeave(); isOpen = false; }
+                        else { onEnter(); isOpen = true; }
+                    });
+                    document.addEventListener('click', (e) => {
+                        if (isOpen && !creditsWrapper.contains(e.target)) {
+                            onLeave(); isOpen = false;
+                        }
+                    });
+                }
+            }
         }
 
         // ─── Footer sticker pop-up on scroll ───
@@ -106,7 +125,8 @@ export default function Footer() {
             }
         });
 
-        // ─── Sticker cursor-velocity push ───
+        // ─── Sticker cursor-velocity push — desktop only ───
+        if (canHover) {
         footerStickers.forEach((sticker, i) => {
             const baseRotation = stickerRotations[i % stickerRotations.length] * 0.7;
             const PROXIMITY_RADIUS = 180, STRENGTH = 4, MAX_PUSH = 55, MIN_SPEED = 3;
@@ -121,8 +141,6 @@ export default function Footer() {
                 const dist = Math.hypot(e.clientX - cx, e.clientY - cy);
                 const onSticker = e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom;
                 const speed = Math.hypot(dx, dy);
-
-                // Disable proximity push if the mouse is hovering over the open credits popup box
                 const isOverCreditsBox = e.target.closest('.credits-box') !== null;
 
                 if (!onSticker && !isOverCreditsBox && dist < PROXIMITY_RADIUS && speed > MIN_SPEED) {
@@ -135,8 +153,8 @@ export default function Footer() {
                 }
             };
             document.addEventListener('mousemove', onMove);
-            // No cleanup stored here to match original behaviour (lives for page lifetime)
         });
+        } // end canHover sticker push
 
         // ─── Wiggle on footer interactive elements ───
         const wiggleTargets = [

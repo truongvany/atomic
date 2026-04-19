@@ -39,3 +39,13 @@ body.is-transitioning .cursor-bubble {
     transform: scale(0) !important;
     display: none !important;
 }
+
+/* ─── Touch devices: remove all custom cursors ───────────────────────────── */
+@media (hover: none), (pointer: coarse) {
+    * {
+        cursor: auto !important;
+    }
+    .cursor-bubble {
+        display: none !important;
+    }
+}

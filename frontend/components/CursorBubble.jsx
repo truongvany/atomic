@@ -1,10 +1,19 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { gsap } from 'gsap';
 
 export default function CursorBubble() {
+    // Detect real pointer device on client only
+    const [canHover, setCanHover] = useState(false);
+
     useEffect(() => {
+        setCanHover(window.matchMedia('(hover: hover) and (pointer: fine)').matches);
+    }, []);
+
+    useEffect(() => {
+        if (!canHover) return;
+
         const cursorBubble = document.querySelector('.cursor-bubble');
         if (!cursorBubble) return;
 
@@ -54,7 +63,10 @@ export default function CursorBubble() {
             document.removeEventListener('mouseover', onMouseOver);
             document.removeEventListener('mouseleave', onMouseLeave);
         };
-    }, []);
+    }, [canHover]);
+
+    // Don't render on touch/stylus devices
+    if (!canHover) return null;
 
     return <div className="cursor-bubble">click</div>;
 }

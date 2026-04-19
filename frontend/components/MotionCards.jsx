@@ -12,88 +12,94 @@ export default function MotionCards() {
     const containerRef = useRef(null);
 
     useEffect(() => {
+        const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
         const ctx = gsap.context(() => {
-            // Inertia on cards
+            // Inertia on cards — desktop only
             const cards = document.querySelectorAll(".motion-card__card");
-            cards.forEach((card) => {
-                let lastX = 0;
-                let lastY = 0;
-                let speedX = 0;
-                let speedY = 0;
+            if (canHover) {
+                cards.forEach((card) => {
+                    let lastX = 0;
+                    let lastY = 0;
+                    let speedX = 0;
+                    let speedY = 0;
 
-                const startRotation = gsap.getProperty(card, "rotation");
-                const startX = gsap.getProperty(card, "x");
-                const startY = gsap.getProperty(card, "y");
+                    const startRotation = gsap.getProperty(card, "rotation");
+                    const startX = gsap.getProperty(card, "x");
+                    const startY = gsap.getProperty(card, "y");
 
-                const onMove = (e) => {
-                    speedX = e.clientX - lastX;
-                    speedY = e.clientY - lastY;
-                    lastX = e.clientX;
-                    lastY = e.clientY;
-                };
+                    const onMove = (e) => {
+                        speedX = e.clientX - lastX;
+                        speedY = e.clientY - lastY;
+                        lastX = e.clientX;
+                        lastY = e.clientY;
+                    };
 
-                const onEnter = (e) => {
-                    speedX = 0;
-                    speedY = 0;
-                    lastX = e.clientX;
-                    lastY = e.clientY;
-                };
+                    const onEnter = (e) => {
+                        speedX = 0;
+                        speedY = 0;
+                        lastX = e.clientX;
+                        lastY = e.clientY;
+                    };
 
-                const onLeave = () => {
-                    gsap.to(card, {
-                        inertia: {
-                            x: { velocity: speedX * 20, end: startX },
-                            y: { velocity: speedY * 20, end: startY },
-                            rotation: { velocity: speedX * 1.5, end: startRotation },
-                        },
-                    });
-                };
+                    const onLeave = () => {
+                        gsap.to(card, {
+                            inertia: {
+                                x: { velocity: speedX * 20, end: startX },
+                                y: { velocity: speedY * 20, end: startY },
+                                rotation: { velocity: speedX * 1.5, end: startRotation },
+                            },
+                        });
+                    };
 
-                card.addEventListener("mousemove", onMove);
-                card.addEventListener("mouseenter", onEnter);
-                card.addEventListener("mouseleave", onLeave);
-            });
+                    card.addEventListener("mousemove", onMove);
+                    card.addEventListener("mouseenter", onEnter);
+                    card.addEventListener("mouseleave", onLeave);
+                });
+            } // end canHover cards
 
-            // Inertia on floating labels
+            // Inertia on floating labels — desktop only
             const labels = document.querySelectorAll(".motion-card__floating-label");
-            labels.forEach((label) => {
-                let lastX = 0;
-                let lastY = 0;
-                let speedX = 0;
-                let speedY = 0;
+            if (canHover) {
+                labels.forEach((label) => {
+                    let lastX = 0;
+                    let lastY = 0;
+                    let speedX = 0;
+                    let speedY = 0;
 
-                const startRotation = gsap.getProperty(label, "rotation");
-                const startX = gsap.getProperty(label, "x");
-                const startY = gsap.getProperty(label, "y");
+                    const startRotation = gsap.getProperty(label, "rotation");
+                    const startX = gsap.getProperty(label, "x");
+                    const startY = gsap.getProperty(label, "y");
 
-                const onMove = (e) => {
-                    speedX = e.clientX - lastX;
-                    speedY = e.clientY - lastY;
-                    lastX = e.clientX;
-                    lastY = e.clientY;
-                };
+                    const onMove = (e) => {
+                        speedX = e.clientX - lastX;
+                        speedY = e.clientY - lastY;
+                        lastX = e.clientX;
+                        lastY = e.clientY;
+                    };
 
-                const onEnter = (e) => {
-                    speedX = 0;
-                    speedY = 0;
-                    lastX = e.clientX;
-                    lastY = e.clientY;
-                };
+                    const onEnter = (e) => {
+                        speedX = 0;
+                        speedY = 0;
+                        lastX = e.clientX;
+                        lastY = e.clientY;
+                    };
 
-                const onLeave = () => {
-                    gsap.to(label, {
-                        inertia: {
-                            x: { velocity: speedX * 25, end: startX },
-                            y: { velocity: speedY * 25, end: startY },
-                            rotation: { velocity: speedX * 2, end: startRotation },
-                        },
-                    });
-                };
+                    const onLeave = () => {
+                        gsap.to(label, {
+                            inertia: {
+                                x: { velocity: speedX * 25, end: startX },
+                                y: { velocity: speedY * 25, end: startY },
+                                rotation: { velocity: speedX * 2, end: startRotation },
+                            },
+                        });
+                    };
 
-                label.addEventListener("mousemove", onMove);
-                label.addEventListener("mouseenter", onEnter);
-                label.addEventListener("mouseleave", onLeave);
-            });
+                    label.addEventListener("mousemove", onMove);
+                    label.addEventListener("mouseenter", onEnter);
+                    label.addEventListener("mouseleave", onLeave);
+                });
+            } // end canHover labels
 
             // Entry Animations: Sticker Pop & Underline Draw
             const tl = gsap.timeline({
