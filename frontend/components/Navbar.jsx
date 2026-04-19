@@ -36,6 +36,7 @@ export default function Navbar() {
         const updateNavbarColor = () => {
             if (!navbar || !contentSection || !footerEl) return;
             const scrollPos = window.scrollY + navbar.offsetHeight / 2;
+            const heroHeight = window.innerHeight; // VimeoHero is ~100vh
             const contentTop = contentSection.getBoundingClientRect().top + window.scrollY;
 
             const showreelSection = document.querySelector('#showreel-section');
@@ -47,6 +48,16 @@ export default function Navbar() {
             const doubleMarquee = document.querySelector('.Double-marquee');
             const doubleMarqueeTop = doubleMarquee ? doubleMarquee.getBoundingClientRect().top + window.scrollY : Infinity;
             const footerTop = footerEl.getBoundingClientRect().top + window.scrollY;
+
+            // On mobile: add frosted glass background when scrolled past hero
+            const isMobile = window.matchMedia('(max-width: 768px)').matches;
+            if (isMobile) {
+                if (window.scrollY > heroHeight * 0.85) {
+                    navbar.classList.add('nav-has-bg');
+                } else {
+                    navbar.classList.remove('nav-has-bg');
+                }
+            }
 
             if (scrollPos >= footerTop) {
                 navbar.classList.add('on-dark'); navbar.classList.remove('on-light');
