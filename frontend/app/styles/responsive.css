@@ -85,6 +85,11 @@
         overflow: visible;
     }
 
+    /* HorizontalWords uses content-section but needs no top padding */
+    .horizontal-words-section.content-section {
+        padding: 0 !important;
+    }
+
     .main-title {
         font-size: 3rem;
         letter-spacing: -2px;

@@ -9,16 +9,22 @@ export default function SmoothScroll() {
     useEffect(() => {
         gsap.registerPlugin(ScrollTrigger);
 
-        const lenis = new Lenis({
+        // Disable Lenis smooth scroll on touch devices — native scroll is better
+        const canSmooth = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+        const lenis = canSmooth ? new Lenis({
             duration: 1.2,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             smoothWheel: true,
             touchMultiplier: 1.5,
-        });
+        }) : null;
 
-        lenis.on('scroll', ScrollTrigger.update);
-        gsap.ticker.add((time) => { lenis.raf(time * 1000); });
-        gsap.ticker.lagSmoothing(0);
+        if (lenis) {
+            lenis.on('scroll', ScrollTrigger.update);
+            gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+            gsap.ticker.lagSmoothing(0);
+            window.__lenis = lenis;
+        }
 
         // Dynamic Tab Title Change
         const originalTitle = document.title;
@@ -27,11 +33,8 @@ export default function SmoothScroll() {
         };
         document.addEventListener('visibilitychange', handleVisibility);
 
-        // Store lenis on window so other components can access it
-        window.__lenis = lenis;
-
         return () => {
-            lenis.destroy();
+            if (lenis) lenis.destroy();
             document.removeEventListener('visibilitychange', handleVisibility);
             delete window.__lenis;
         };
