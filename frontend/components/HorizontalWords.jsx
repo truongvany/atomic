@@ -21,7 +21,11 @@ const HorizontalWords = () => {
             const arrows = container.querySelectorAll('.horizontal-words__arrow-svg path, .horizontal-words__arrow-end-svg path');
 
             if (isMobile) {
-                // Mobile: skip GSAP pin, let CSS overflow-x handle scrolling
+                // Clear any GSAP inline styles that may have been applied during SSR/hydration
+                gsap.set(textRef, { clearProps: 'all' });
+                gsap.set(container, { clearProps: 'all' });
+                // Mark section so CSS can target it safely
+                container.setAttribute('data-mobile', 'true');
                 return;
             }
 
